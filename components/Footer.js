@@ -3,8 +3,8 @@ export default function Footer() {
     const currentYear = new Date().getFullYear(); 
 
     return (
-        <footer className="bg-blue-300
-        text-gray-600
+        <footer className="
+        text-gray-500
         py-6 mt-12
         ">
         <div className="

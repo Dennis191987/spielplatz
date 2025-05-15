@@ -1,43 +1,50 @@
-"use client";
+"use client"; // Erfordert Client-Interaktivität und Hooks
 
-import { useSession, signIn, signOut } from "next-auth/react";
-import Login from "./Login";
-import Button from "./Button";
+import { useSession, signIn, signOut } from "next-auth/react"; // Clientseitige Hooks/Funktionen
 
 export default function AuthButtons() {
+  // Holt den aktuellen Session-Status (loading, authenticated, unauthenticated)
   const { data: session, status } = useSession();
 
+  // Während die Session geprüft wird
   if (status === "loading") {
-    return <p className="text-amber-600 font-medium">Prüfe Login...</p>;
+    return <p>Prüfe Login...</p>;
   }
 
+  // Wenn der Benutzer eingeloggt ist
   if (status === "authenticated") {
     return (
-      <div className="bg-[#fffaf5] border border-[#f4b400] rounded-xl p-4 shadow-sm">
-        <p className="text-gray-800 mb-2">
-           Eingeloggt als: <strong className="text-[#b83c3c]">{session.user?.name}</strong> 
-          <br />
-          <span className="text-sm text-gray-600">({session.user?.email})</span>
-        </p>
-        <button
-          onClick={() => signOut()}
-          className="bg-[#b83c3c] hover:bg-[#992c2c] text-white font-semibold py-2 px-4 rounded-xl transition"
-        >
+      <div>
+        {/* Zeige Benutzername und E-Mail aus der Session */}
+        <p>Eingeloggt als: {session.user?.name} ({session.user?.email})</p>
+        {/* Button zum Abmelden, ruft signOut() von next-auth auf */}
+        <button onClick={() => signOut()} style={buttonStyle}>
           Ausloggen
         </button>
       </div>
     );
   }
 
+  // Wenn der Benutzer NICHT eingeloggt ist
   return (
-    <div className="bg-[#fffaf5] border border-[#f4b400] rounded-xl p-4 shadow-sm">
-      <p className="text-gray-800 mb-2"> Nicht eingeloggt</p>
-      <button
-        onClick={() => signIn("credentials", { callbackUrl: "/geschützt" })}
-        className="bg-[#f4b400] hover:bg-[#e0a800] text-black font-semibold py-2 px-4 rounded-xl transition"
-      >
-       Einloggen
+    <div>
+      <p>Nicht eingeloggt.</p>
+      {/* Button zum Anmelden, ruft signIn() von next-auth auf */}
+      {/* Ohne Argumente leitet signIn() zur Standard-Login-Seite (oder der in pages.signIn definierten) */}
+      {/* Normalerweise würdest du hier zu deiner eigenen Login-Form leiten oder sie anzeigen */}
+      <button onClick={() => signIn()} style={buttonStyle}>
+        Einloggen (Standardseite)
       </button>
+      {/* Wir werden gleich ein eigenes Login-Formular erstellen */}
     </div>
   );
 }
+
+// Kleines Hilfs-Styling für die Buttons
+const buttonStyle = {
+  padding: '5px 10px',
+  margin: '5px',
+  cursor: 'pointer',
+  border: '1px solid #ccc',
+  borderRadius: '4px'
+};

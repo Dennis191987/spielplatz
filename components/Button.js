@@ -10,7 +10,7 @@ function Button({ buttonText, onClickHandler }){
         hover:-translate-y-1 
         hover:scale-110
         hover:bg-indigo-500
-        text-white
+        text-white 
         font-bold
         py-6
         px-6
